@@ -35,19 +35,18 @@ class CanvasViewController: UIViewController {
         var up = (velocity.y < 0.0)
         
         if sender.state == UIGestureRecognizerState.Began {
-            println("Gesture began at: \(point)")
             trayOriginalCenter = trayView.center
         } else if sender.state == UIGestureRecognizerState.Changed {
             var translation = sender.translationInView(view)
             trayView.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + translation.y)
         } else if sender.state == UIGestureRecognizerState.Ended {
-            println("Gesture ended at: \(point)")
-            if up {
-                trayView.center = openPos
-            } else {
-                trayView.center = closePos
-            }
-
+            UIView.animateWithDuration(0.2, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 100.0, options: nil, animations: { () -> Void in
+                if up {
+                    self.trayView.center = self.openPos
+                } else {
+                    self.trayView.center = self.closePos
+                }
+            }, completion: nil)
         }
 
     }
