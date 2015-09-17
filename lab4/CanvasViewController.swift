@@ -13,10 +13,15 @@ class CanvasViewController: UIViewController {
     @IBOutlet weak var trayView: UIView!
     
     var trayOriginalCenter: CGPoint!
+    var openPos: CGPoint!
+    var closePos: CGPoint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        openPos = trayView.center
+        closePos = trayView.center
+        closePos.y += 170.0
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,19 +30,24 @@ class CanvasViewController: UIViewController {
     }
 
     @IBAction func onTrayPanGesture(sender: UIPanGestureRecognizer) {
-        var panGestureRecognizer = sender
-        var point = panGestureRecognizer.locationInView(view)
-        var velocity = panGestureRecognizer.velocityInView(view)
+        var point = sender.locationInView(view)
+        var velocity = sender.velocityInView(view)
+        var up = (velocity.y < 0.0)
         
-        if panGestureRecognizer.state == UIGestureRecognizerState.Began {
+        if sender.state == UIGestureRecognizerState.Began {
             println("Gesture began at: \(point)")
             trayOriginalCenter = trayView.center
-        } else if panGestureRecognizer.state == UIGestureRecognizerState.Changed {
-            var translation = panGestureRecognizer.translationInView(view)
-            println("Gesture changed at: \(point)")
+        } else if sender.state == UIGestureRecognizerState.Changed {
+            var translation = sender.translationInView(view)
             trayView.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + translation.y)
-        } else if panGestureRecognizer.state == UIGestureRecognizerState.Ended {
+        } else if sender.state == UIGestureRecognizerState.Ended {
             println("Gesture ended at: \(point)")
+            if up {
+                trayView.center = openPos
+            } else {
+                trayView.center = closePos
+            }
+
         }
 
     }
