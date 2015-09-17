@@ -15,6 +15,8 @@ class CanvasViewController: UIViewController {
     var trayOriginalCenter: CGPoint!
     var openPos: CGPoint!
     var closePos: CGPoint!
+    var newlyCreatedFace: UIImageView!
+    var newlyCreatedFaceOrigin: CGPoint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,5 +53,33 @@ class CanvasViewController: UIViewController {
 
     }
 
+    @IBAction func onFacePanGesture(sender: UIPanGestureRecognizer) {
+        switch sender.state {
+        case UIGestureRecognizerState.Began:
+            
+            createNewFace(sender)
+            
+        case UIGestureRecognizerState.Changed:
+            var translation = sender.translationInView(view)
+            newlyCreatedFace.center = CGPoint(x: newlyCreatedFaceOrigin.x + translation.x, y: newlyCreatedFaceOrigin.y + translation.y)
+            
+        case UIGestureRecognizerState.Ended:
+            
+            NSLog("ended")
+        default:
+            NSLog("unhandled")
+            
+        }
+    }
+    
+    private func createNewFace(sender: UIPanGestureRecognizer) {
+        var imageView = sender.view as! UIImageView
+        
+        newlyCreatedFace = UIImageView(image: imageView.image)
+        view.addSubview(newlyCreatedFace)
+        newlyCreatedFace.center = imageView.center
+        newlyCreatedFace.center.y += trayView.frame.origin.y
+        newlyCreatedFaceOrigin = newlyCreatedFace.center
+    }
 }
 
