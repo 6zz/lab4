@@ -77,6 +77,9 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="C3e-Wz-sR8" appends="YES" id="04J-RW-vOs"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -114,6 +117,11 @@
                 <panGestureRecognizer minimumNumberOfTouches="1" id="MeZ-RG-ckF" userLabel="deadPanGesture">
                     <connections>
                         <action selector="onFacePanGesture:" destination="vXZ-lx-hvc" id="HVg-rP-6TM"/>
+                    </connections>
+                </panGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="C3e-Wz-sR8" userLabel="trayPanGesture">
+                    <connections>
+                        <action selector="onTrayPanGesture:" destination="vXZ-lx-hvc" id="4F8-j3-095"/>
                     </connections>
                 </panGestureRecognizer>
             </objects>
