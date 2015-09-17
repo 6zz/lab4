@@ -8,6 +8,15 @@
 
 import UIKit
 
+extension UIImageView {
+    
+    func doScaling(pinchGestureRecognizer: UIPinchGestureRecognizer) {
+        NSLog("should scale")
+        var scale = pinchGestureRecognizer.scale
+        transform = CGAffineTransformMakeScale(scale, scale)
+    }
+}
+
 class CanvasViewController: UIViewController {
 
     @IBOutlet weak var trayView: UIView!
@@ -63,9 +72,9 @@ class CanvasViewController: UIViewController {
             var translation = sender.translationInView(view)
             newlyCreatedFace.center = CGPoint(x: newlyCreatedFaceOrigin.x + translation.x, y: newlyCreatedFaceOrigin.y + translation.y)
             
-        case UIGestureRecognizerState.Ended:
-            
-            NSLog("ended")
+//        case UIGestureRecognizerState.Ended:
+//            
+//            NSLog("ended")
         default:
             NSLog("unhandled")
             
@@ -76,10 +85,20 @@ class CanvasViewController: UIViewController {
         var imageView = sender.view as! UIImageView
         
         newlyCreatedFace = UIImageView(image: imageView.image)
+        addPinchGestureRecognizer(newlyCreatedFace)
+        
         view.addSubview(newlyCreatedFace)
         newlyCreatedFace.center = imageView.center
         newlyCreatedFace.center.y += trayView.frame.origin.y
         newlyCreatedFaceOrigin = newlyCreatedFace.center
     }
+    
+    private func addPinchGestureRecognizer(target: UIImageView) {
+        var gesture = UIPinchGestureRecognizer(target: target, action: "doScaling:")
+        
+        target.userInteractionEnabled = true
+        target.addGestureRecognizer(gesture)
+    }
+
 }
 
