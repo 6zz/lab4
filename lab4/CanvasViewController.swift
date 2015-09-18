@@ -8,7 +8,23 @@
 
 import UIKit
 
+// reference to an associated-object
+var newFaceOriginalCenter: CGPoint!
+
 extension UIImageView {
+    //
+    // use associated-objects to add class variables to
+    // already defined classes
+    //
+    class var originalCenter: CGPoint {
+        get {
+            return newFaceOriginalCenter
+        }
+        set (center) {
+            newFaceOriginalCenter = center
+        }
+    }
+
     func doScaling(pinchGestureRecognizer: UIPinchGestureRecognizer) {
         NSLog("should scale")
         var scale = pinchGestureRecognizer.scale
@@ -16,17 +32,17 @@ extension UIImageView {
     }
     
     func onPan(panGestureRecognizer: UIPanGestureRecognizer) {
-        
         switch panGestureRecognizer.state {
         case UIGestureRecognizerState.Began:
             var scale = CGFloat(2.0)
             transform = CGAffineTransformMakeScale(scale, scale)
+            newFaceOriginalCenter = center
             
         case UIGestureRecognizerState.Changed:
             var translation = panGestureRecognizer.translationInView(superview!)
             center = CGPoint(
-                x: center.x + translation.x,
-                y: center.y + translation.y
+                x: UIImageView.originalCenter.x + translation.x,
+                y: UIImageView.originalCenter.y + translation.y
             )
             
         case UIGestureRecognizerState.Ended:
