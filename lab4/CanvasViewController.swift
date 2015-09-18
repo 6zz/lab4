@@ -53,6 +53,10 @@ extension UIImageView {
             
         }
     }
+    
+    func onDoubleTap(tapGestureRecognizer: UITapGestureRecognizer) {
+        removeFromSuperview()
+    }
 }
 
 class CanvasViewController: UIViewController {
@@ -130,6 +134,7 @@ class CanvasViewController: UIViewController {
         newlyCreatedFace = UIImageView(image: imageView.image)
         addPinchGestureRecognizer(newlyCreatedFace)
         addPanGestureRecognizer(newlyCreatedFace)
+        addTapGestureRecognizer(newlyCreatedFace)
         
         view.addSubview(newlyCreatedFace)
         newlyCreatedFace.center = imageView.center
@@ -151,5 +156,12 @@ class CanvasViewController: UIViewController {
         target.addGestureRecognizer(gesture)
     }
 
+    private func addTapGestureRecognizer(target: UIImageView) {
+        var gesture = UITapGestureRecognizer(target: target, action: "onDoubleTap:")
+        
+        gesture.numberOfTapsRequired = 2
+        target.userInteractionEnabled = true
+        target.addGestureRecognizer(gesture)
+    }
 }
 
