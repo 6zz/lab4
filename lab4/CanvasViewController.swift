@@ -9,11 +9,33 @@
 import UIKit
 
 extension UIImageView {
-    
     func doScaling(pinchGestureRecognizer: UIPinchGestureRecognizer) {
         NSLog("should scale")
         var scale = pinchGestureRecognizer.scale
         transform = CGAffineTransformMakeScale(scale, scale)
+    }
+    
+    func onPan(panGestureRecognizer: UIPanGestureRecognizer) {
+        
+        switch panGestureRecognizer.state {
+        case UIGestureRecognizerState.Began:
+            var scale = CGFloat(2.0)
+            transform = CGAffineTransformMakeScale(scale, scale)
+            
+        case UIGestureRecognizerState.Changed:
+            var translation = panGestureRecognizer.translationInView(superview!)
+            center = CGPoint(
+                x: center.x + translation.x,
+                y: center.y + translation.y
+            )
+            
+        case UIGestureRecognizerState.Ended:
+            transform = CGAffineTransformIdentity
+            
+        default:
+            NSLog("unhandled gesture recognizer state")
+            
+        }
     }
 }
 
@@ -86,6 +108,7 @@ class CanvasViewController: UIViewController {
         
         newlyCreatedFace = UIImageView(image: imageView.image)
         addPinchGestureRecognizer(newlyCreatedFace)
+        addPanGestureRecognizer(newlyCreatedFace)
         
         view.addSubview(newlyCreatedFace)
         newlyCreatedFace.center = imageView.center
@@ -95,6 +118,13 @@ class CanvasViewController: UIViewController {
     
     private func addPinchGestureRecognizer(target: UIImageView) {
         var gesture = UIPinchGestureRecognizer(target: target, action: "doScaling:")
+        
+        target.userInteractionEnabled = true
+        target.addGestureRecognizer(gesture)
+    }
+    
+    private func addPanGestureRecognizer(target: UIImageView) {
+        var gesture = UIPanGestureRecognizer(target: target, action: "onPan:")
         
         target.userInteractionEnabled = true
         target.addGestureRecognizer(gesture)
