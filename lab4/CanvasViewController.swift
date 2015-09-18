@@ -62,6 +62,7 @@ extension UIImageView {
 class CanvasViewController: UIViewController {
 
     @IBOutlet weak var trayView: UIView!
+    @IBOutlet weak var arrowImageView: UIImageView!
     
     var trayOriginalCenter: CGPoint!
     var openPos: CGPoint!
@@ -89,6 +90,7 @@ class CanvasViewController: UIViewController {
         
         if sender.state == UIGestureRecognizerState.Began {
             trayOriginalCenter = trayView.center
+
         } else if sender.state == UIGestureRecognizerState.Changed {
             var translation = sender.translationInView(view)
             var newCenter = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + translation.y)
@@ -97,12 +99,16 @@ class CanvasViewController: UIViewController {
                 newCenter.y = trayOriginalCenter.y + translation.y / 10
             }
             trayView.center = newCenter
+            arrowImageView.transform = CGAffineTransformMakeRotation(30.0)
+
         } else if sender.state == UIGestureRecognizerState.Ended {
             UIView.animateWithDuration(0.2, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 100.0, options: nil, animations: { () -> Void in
                 if up {
                     self.trayView.center = self.openPos
+                    self.arrowImageView.transform = CGAffineTransformIdentity
                 } else {
                     self.trayView.center = self.closePos
+                    self.arrowImageView.transform = CGAffineTransformMakeScale(1, -1)
                 }
             }, completion: nil)
         }
