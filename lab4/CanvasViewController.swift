@@ -69,6 +69,7 @@ class CanvasViewController: UIViewController {
     var closePos: CGPoint!
     var newlyCreatedFace: UIImageView!
     var newlyCreatedFaceOrigin: CGPoint!
+    var degree: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,7 +100,12 @@ class CanvasViewController: UIViewController {
                 newCenter.y = trayOriginalCenter.y + translation.y / 10
             }
             trayView.center = newCenter
-            arrowImageView.transform = CGAffineTransformMakeRotation(30.0)
+            if up {
+                degree -= 0.08
+            } else {
+                degree += 0.08
+            }
+            arrowImageView.transform = CGAffineTransformMakeRotation(degree)
 
         } else if sender.state == UIGestureRecognizerState.Ended {
             UIView.animateWithDuration(0.2, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 100.0, options: nil, animations: { () -> Void in
