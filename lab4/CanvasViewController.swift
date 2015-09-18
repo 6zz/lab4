@@ -119,9 +119,19 @@ class CanvasViewController: UIViewController {
             var translation = sender.translationInView(view)
             newlyCreatedFace.center = CGPoint(x: newlyCreatedFaceOrigin.x + translation.x, y: newlyCreatedFaceOrigin.y + translation.y)
             
-//        case UIGestureRecognizerState.Ended:
-//            
-//            NSLog("ended")
+        case UIGestureRecognizerState.Ended:
+            if newlyCreatedFace.frame.intersects(trayView.frame) {
+                // drop it back to it's origin
+                UIView.animateWithDuration(
+                    0.5,
+                    animations: { () -> Void in
+                        self.newlyCreatedFace.center = self.newlyCreatedFaceOrigin
+                    },
+                    completion: { (done) -> Void in
+                        self.newlyCreatedFace.removeFromSuperview()
+                    }
+                )
+            }
         default:
             NSLog("unhandled")
             
@@ -164,4 +174,3 @@ class CanvasViewController: UIViewController {
         target.addGestureRecognizer(gesture)
     }
 }
-
