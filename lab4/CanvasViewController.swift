@@ -87,7 +87,12 @@ class CanvasViewController: UIViewController {
             trayOriginalCenter = trayView.center
         } else if sender.state == UIGestureRecognizerState.Changed {
             var translation = sender.translationInView(view)
-            trayView.center = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + translation.y)
+            var newCenter = CGPoint(x: trayOriginalCenter.x, y: trayOriginalCenter.y + translation.y)
+            
+            if newCenter.y <= openPos.y {
+                newCenter.y = trayOriginalCenter.y + translation.y / 10
+            }
+            trayView.center = newCenter
         } else if sender.state == UIGestureRecognizerState.Ended {
             UIView.animateWithDuration(0.2, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 100.0, options: nil, animations: { () -> Void in
                 if up {
